@@ -60,46 +60,7 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Define a controller
-```bash
-@Controller('tasks')
-export class TaskController{
-  // some code here
-}
-```
-
-## Define a Handler
-Handler is a class containing a controller within. That Controller will have many Decorator inside: @Get, @Put, @Delete
-```bash
-import Controller from './common'
-
-@Controller('tasks')
-export class TaskController{
-  @Get()
-  getAllTasks(){
-    //code here
-  }
-  
-  @Post()
-  createTask(){
-    //code here
-  }
-}
-```
-## Quickly generate Controller
-```bash 
-
-```
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+## Content 
+- **Section 2:** Task Management Application (Rest API)
+- **Section 3:** Validation and Error Handling
+- **Section 4:** Data Persistence: PostgreSQL and TypeORM
