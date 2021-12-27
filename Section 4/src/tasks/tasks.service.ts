@@ -1,45 +1,45 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { randomUUID } from 'crypto';
+import { InjectRepository } from '@nestjs/typeorm';
 import { NotFoundError } from 'rxjs';
 import { TaskDto } from './dto/create-task.dto';
-import { TaskModel, TaskStatus } from './task.model';
+import { TaskStatus } from './task-status.enum';
+import   { Task }  from './task.entity';
+import { TaskRepository } from './task.repository';
 
 @Injectable()
 export class TasksService {
-  private ar: TaskModel[] = [];
-
-  getAllTask(): TaskModel[] {
-    return this.ar;
+  
+  constructor(
+    @InjectRepository(TaskRepository)
+    private tasksRepository: TaskRepository,
+  ) {}  
+  
+  getAllTask(): Promise<Task[]> {
+    return this.tasksRepository.getTasks();
   }
 
-  createTask(taskDto: TaskDto): TaskModel {
-    const { title, description } = taskDto;
-    const task: TaskModel = {
-      id: randomUUID(),
-      title,
-      description,
-      status: TaskStatus.OPEN,
-    }
-    this.ar.push(task);
-    return task;
+  createTask(taskDto: TaskDto): Promise<Task> {
+    return this.tasksRepository.createTask(taskDto);
   }
 
-  findTaskById(id: string): TaskModel {
-    const task = this.ar.find((ar) => ar.id === id);
-    if(!task) throw new NotFoundException();
-    return task;
+  // findTaskById(id: string): TaskModel {
+  //   const task = this.ar.find((ar) => ar.id === id);
+  //   if(!task) throw new NotFoundException();
+  //   return task;
+  // }
+
+  getTaskById(id: string): Promise<Task>{
+    return this.tasksRepository.getTaskById(id);
   }
 
 
-  deleteTaskById(id: string): void {
-    const task: TaskModel = this.findTaskById(id);
-    const index:number = this.ar.indexOf(task);
-    this.ar.splice(index, 1);
+  deleteTaskById(id: string): Promise<Task> {
+    return this.tasksRepository.deleteTask(id);
   }
 
-  updateTaskById(id: string, status: TaskStatus): TaskModel{
-    const task = this.findTaskById(id);
-    task.status = status;
-    return task;
+  updateTaskById(id: string, status: TaskStatus): Promise<Task> {
+  
+    return this.tasksRepository.updateTask(id, status);
   }
+  // docker run --name postgres-nest -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres
 }
