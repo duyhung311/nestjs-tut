@@ -10,7 +10,7 @@ export class TasksController {
   constructor(private tasksService: TasksService) { }
 
   @Get()
-  getTasks(): Promise<Task[]> {
+  getAllTasks(): Promise<Task[]> {
     return this.tasksService.getAllTask();
   }
 
